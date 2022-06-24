@@ -1,5 +1,5 @@
 {
-  "name": "@mind-cli/cli",
+  "name": "@imooc-cli/core",
   "version": "1.0.0",
   "description": "mind-cli cli",
   "author": "PeterWangYong <763874832@qq.com>",
@@ -31,8 +31,10 @@
   "dependencies": {
     "@mind-cli/log": "file:../../utils/log",
     "@mind-cli/utils": "file:../../utils/utils",
+    "@mind-cli/get-npm-info": "file:../../utils/get-npm-info",
     "colors": "^1.4.0",
     "dedent": "^0.7.0",
+    "dotenv": "^16.0.1",
     "import-local": "^3.1.0",
     "minimist": "^1.2.6",
     "npmlog": "^6.0.2",
