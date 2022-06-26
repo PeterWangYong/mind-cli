@@ -25,11 +25,21 @@ class InitCommand extends Command {
 
   prepare() {
     // 1. 判断当前目录是否为空（这里可以新建项目目录，而不是清空当前目录）
-    const localPath = process.cwd();
-
+    if (!this.isCwdEmpty()) {
+      // 询问是否继续创建
+    }
     // 2. 是否启动强制更新
     // 3. 选择创建项目或组件
     // 4. 获取项目基本信息
+  }
+
+  isCwdEmpty() {
+    const localPath = process.cwd();
+    let fileList = fs.readdirSync(localPath);
+    fileList = fileList.filter((file) => {
+      return !file.startsWith(".") || ["node_modules"].indexOf(file) < 0;
+    });
+    return !fileList || fileList.length <= 0;
   }
 }
 
