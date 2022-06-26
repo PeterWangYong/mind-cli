@@ -1,34 +1,73 @@
-'use strict';
+"use strict";
 
 module.exports = index;
 
-const path = require('path');
-const semver = require('semver');
-const colors = require('colors/safe');
-const rootCheck = require('root-check');
-const userHome = require('user-home');
-const pathExists = require('path-exists').sync;
-const minimist = require('minimist');
-const dotenv = require('dotenv');
+const path = require("path");
+const semver = require("semver");
+const colors = require("colors/safe");
+const rootCheck = require("root-check");
+const userHome = require("user-home");
+const pathExists = require("path-exists").sync;
+const dotenv = require("dotenv");
+const commander = require("commander");
 
-const log = require('@mind-cli/log');
-const { getLastNpmVersion } = require('@mind-cli/get-npm-info');
+const log = require("@mind-cli/log");
+const { getLastNpmVersion } = require("@mind-cli/get-npm-info");
+const init = require("@mind-cli/init");
+const exec = require("@mind-cli/exec");
 
-const pkg = require('../package.json');
-const constant = require('./const');
+const pkg = require("../package.json");
+const constant = require("./const");
 
 async function index() {
   try {
-    checkPkgVersion();
-    checkNodeVersion();
-    checkRoot();
-    checkUserHome();
-    checkInputArgs();
-    checkEnv();
-    await checkGlobalUpdate();
+    await prepare();
+    registerCommand();
   } catch (e) {
     log.error(e.message);
   }
+}
+
+function registerCommand() {
+  const program = new commander.Command();
+  program
+    .name(Object.keys(pkg.bin)[0])
+    .usage("<command> [options]")
+    .version(pkg.version)
+    .option("-d, --debug", "是否开启调试模式", false)
+    .option("-tp, --targetPath <targetPath>", "是否指定本地调试文件路径", "");
+
+  program
+    .command("init [projectName]")
+    .option("-f, --force", "是否强制初始化项目")
+    .action(exec);
+  // 开启debug模式
+  program.on("option:debug", () => {
+    process.env.LOG_LEVEL = program.opts().debug ? "verbose" : "info";
+    log.level = process.env.LOG_LEVEL;
+  });
+  // 设置targetPath
+  program.on("option:targetPath", () => {
+    process.env.CLI_TARGET_PATH = program.opts().targetPath;
+  });
+  // 对未知命令的监听
+  program.on("command:*", (unknownCommands) => {
+    console.log(colors.red(`未知的命令: ${unknownCommands[0]}`));
+    const availableCommands = program.commands.map((cmd) => cmd.name());
+    if (availableCommands.length > 0) {
+      console.log(colors.red(`可用的命令: ${availableCommands.join(",")}`));
+    }
+  });
+
+  program.parse(process.argv);
+}
+
+async function prepare() {
+  checkPkgVersion();
+  checkRoot();
+  checkUserHome();
+  checkEnv();
+  await checkGlobalUpdate();
 }
 
 async function checkGlobalUpdate() {
@@ -50,7 +89,7 @@ async function checkGlobalUpdate() {
 }
 // 加载环境变量
 function checkEnv() {
-  const dotenvPath = path.resolve(userHome, '.env');
+  const dotenvPath = path.resolve(userHome, ".env");
   if (pathExists(dotenvPath)) {
     dotenv.config({ path: dotenvPath });
   }
@@ -62,15 +101,9 @@ function createDefaultEnv() {
   process.env.CLI_HOME_PATH = path.resolve(userHome, cliHome);
 }
 
-function checkInputArgs() {
-  const args = minimist(process.argv.slice(2));
-  process.env.LOG_LEVEL = args.debug ? 'verbose' : 'info';
-  log.level = process.env.LOG_LEVEL;
-}
-
 function checkUserHome() {
   if (!userHome || !pathExists(userHome)) {
-    throw new Error(colors.red('当前登录用户主目录不存在!'));
+    throw new Error(colors.red("当前登录用户主目录不存在!"));
   }
 }
 
@@ -78,18 +111,6 @@ function checkRoot() {
   rootCheck();
 }
 
-function checkNodeVersion() {
-  // 1. 获取当前Node版本号
-  const currentVersion = process.version;
-  // 2. 比对最低版本号
-  const lowestNodeVersion = constant.LOWEST_NODE_VERSION;
-  if (!semver.gt(currentVersion, lowestNodeVersion)) {
-    throw new Error(
-      colors.red(`mind-cli 需要安装 v${lowestNodeVersion} 以上版本的 Node.js`)
-    );
-  }
-}
-
 function checkPkgVersion() {
-  log.notice('cli', pkg.version);
+  log.notice("cli", pkg.version);
 }

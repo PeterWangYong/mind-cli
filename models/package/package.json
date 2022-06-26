@@ -1,13 +1,11 @@
 {
-  "name": "@mind-cli/cli",
+  "name": "@mind-cli/package",
   "version": "1.0.0",
-  "description": "mind-cli cli",
+  "description": "mind-cli npm module",
   "author": "PeterWangYong <763874832@qq.com>",
-  "homepage": "https://github.com/PeterWangYong/mind-cli/tree/main/packages/core#readme",
+  "homepage": "https://github.com/PeterWangYong/mind-cli/tree/main/core/package#readme",
   "license": "ISC",
-  "bin": {
-    "mind": "bin/index.js"
-  },
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -29,21 +27,12 @@
     "url": "https://github.com/PeterWangYong/mind-cli/issues"
   },
   "dependencies": {
+    "@mind-cli/format-path": "file:../../utils/format-path",
     "@mind-cli/get-npm-info": "file:../../utils/get-npm-info",
-    "@mind-cli/log": "file:../../utils/log",
     "@mind-cli/utils": "file:../../utils/utils",
-    "@mind-cli/init": "file:../../commands/init",
-    "@mind-cli/exec": "file:../exec",
-    "colors": "^1.4.0",
-    "commander": "^9.3.0",
-    "dedent": "^0.7.0",
-    "dotenv": "^16.0.1",
-    "import-local": "^3.1.0",
-    "npmlog": "^6.0.2",
+    "fs-extra": "^10.1.0",
+    "npminstall": "^6.4.0",
     "path-exists": "^4.0.0",
-    "root-check": "^1.0.0",
-    "semver": "^7.3.7",
-    "user-home": "^3.0.0",
-    "yargs": "^17.5.1"
+    "pkg-dir": "^5.0.0"
   }
 }

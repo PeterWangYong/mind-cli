@@ -1,26 +1,29 @@
-'use strict';
+"use strict";
 
-const axios = require('axios');
-const urlJoin = require('url-join');
-const semver = require('semver');
+const axios = require("axios");
+const urlJoin = require("url-join");
+const semver = require("semver");
 
 // 获取默认registry
 function getDefaultRegistry(isOriginal = false) {
   return isOriginal
-    ? 'https://registry.npmjs.org'
-    : 'https://registry.npm.taobao.org';
+    ? "https://registry.npmjs.org"
+    : "https://registry.npm.taobao.org";
 }
 
 // 获取NPM包发布信息
 async function getNpmInfo(npmName, registry) {
-  console.log(npmName);
   if (!npmName) {
     return null;
   }
   registry = registry || getDefaultRegistry();
   const npmInfoUrl = urlJoin(registry, npmName);
-  const { status, data } = await axios.get(npmInfoUrl);
-  return status === 200 ? data : null;
+  try {
+    const { status, data } = await axios.get(npmInfoUrl);
+    return status === 200 ? data : null;
+  } catch (error) {
+    return null;
+  }
 }
 
 // 提取NPM所有的版本号
@@ -45,8 +48,19 @@ async function getLastNpmVersion(baseVersion, npmName, registry) {
   }
 }
 
+// 获取所有版本中最新的版本号
+async function getLatestNpmVersion(npmName, registry) {
+  const versions = await getNpmVersions(npmName, registry);
+  if (versions) {
+    return versions.sort((a, b) => (semver.gt(b, a) ? 1 : -1))[0];
+  }
+  return null;
+}
+
 module.exports = {
   getNpmInfo,
   getNpmVersions,
   getLastNpmVersion,
+  getDefaultRegistry,
+  getLatestNpmVersion,
 };
