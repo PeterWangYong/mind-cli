@@ -67,7 +67,7 @@ async function exec(...args) {
         }
       });
       // 存放opts的值用于Command/initArgs中还原opts函数
-      o.opts = cmd.opts();
+      o._opts = cmd.opts();
       args[args.length - 1] = o;
       const code = `require('${rootFile}')(${JSON.stringify(args)})`;
       const child = spawn("node", ["-e", code], {

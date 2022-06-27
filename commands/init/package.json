@@ -28,6 +28,9 @@
   },
   "dependencies": {
     "@mind-cli/command": "file:../../models/command",
-    "@mind-cli/log": "file:../../utils/log"
+    "@mind-cli/log": "file:../../utils/log",
+    "fs-extra": "^10.1.0",
+    "inquirer": "^8.2.4",
+    "semver": "^7.3.7"
   }
 }
