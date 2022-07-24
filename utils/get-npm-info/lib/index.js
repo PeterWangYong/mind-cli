@@ -16,7 +16,7 @@ async function getNpmInfo(npmName, registry) {
   if (!npmName) {
     return null;
   }
-  registry = registry || getDefaultRegistry();
+  registry = registry || getDefaultRegistry(true);
   const npmInfoUrl = urlJoin(registry, npmName);
   try {
     const { status, data } = await axios.get(npmInfoUrl);

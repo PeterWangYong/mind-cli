@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@mind-cli/package": "file:../../models/package",
-    "@mind-cli/log": "file:../../utils/log"
+    "@mind-cli/log": "file:../../utils/log",
+    "@mind-cli/utils": "file:../../utils/utils"
   }
 }

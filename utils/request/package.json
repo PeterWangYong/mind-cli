@@ -1,9 +1,9 @@
 {
-  "name": "@mind-cli/utils",
+  "name": "@mind-cli/request",
   "version": "1.0.0",
-  "description": "mind-cli utils",
+  "description": "mind-cli request",
   "author": "PeterWangYong <763874832@qq.com>",
-  "homepage": "https://github.com/PeterWangYong/mind-cli/tree/main/packages/utils#readme",
+  "homepage": "https://github.com/PeterWangYong/mind-cli/tree/main/utils/request#readme",
   "license": "ISC",
   "main": "lib/index.js",
   "directories": {
@@ -14,7 +14,7 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "https://registry.npm.taobao.org/"
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,6 @@
     "url": "https://github.com/PeterWangYong/mind-cli/issues"
   },
   "dependencies": {
-    "cli-spinner": "^0.2.10"
+    "axios": "^0.27.2"
   }
 }

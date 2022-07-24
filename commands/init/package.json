@@ -29,8 +29,15 @@
   "dependencies": {
     "@mind-cli/command": "file:../../models/command",
     "@mind-cli/log": "file:../../utils/log",
+    "@mind-cli/package": "file:../../models/package",
+    "@mind-cli/request": "file:../../utils/request",
+    "@mind-cli/utils": "file:../../utils/utils",
+    "ejs": "^3.1.8",
     "fs-extra": "^10.1.0",
+    "glob": "^8.0.3",
     "inquirer": "^8.2.4",
-    "semver": "^7.3.7"
+    "kebab-case": "^1.0.1",
+    "semver": "^7.3.7",
+    "user-home": "^3.0.0"
   }
 }
